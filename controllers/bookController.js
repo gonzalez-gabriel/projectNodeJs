@@ -5,14 +5,14 @@ const booksController = (Book) => {
         const { query } = req;
         const response = await Book.find(query);
 
-        res.json(response);
+        res.status(200).json(response);
     }
 
     // POST BOOKS
     const postBooks = async (req, res) => {
         const book = new Book(req.body);
         await book.save();
-        res.json(book);
+        res.status(201).json(book);
     }
 
     // GET BOOK BY ID
@@ -23,7 +23,7 @@ const booksController = (Book) => {
             
             res.json(response);
         }catch(err){
-            res.status(404).json(`${err.name}: Unknown Id`);
+            res.status(500).json(err.name);
         }
     }
 
@@ -44,7 +44,7 @@ const booksController = (Book) => {
             })
             res.json(response);
         }catch(err){
-            res.status(404).json(`${err.name}: Unknown Id`);
+            res.status(500).json(err.name);
         }
     }
     
@@ -57,7 +57,7 @@ const booksController = (Book) => {
 
             res.status(202).json('Book has been deleted...')
         }catch(err) {
-            res.status(404).json(`${err.name}: Unknown Id`);
+            res.status(500).json(err.name);
         }
     }
 

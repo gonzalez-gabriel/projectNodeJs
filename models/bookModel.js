@@ -18,7 +18,7 @@ const bookModel = new Schema(
         },
         read: { 
             type: Boolean,
-            required: [true, 'Es requerido el género']
+            required: [true, 'Es requerido']
         }
     }
 )

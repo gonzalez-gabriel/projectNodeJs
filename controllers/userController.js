@@ -8,10 +8,10 @@ const UsersController = (User) => {
         const response = await User.find(query);
 
         if(Object.keys(query).length > 0) {
-            res.json(null);
+            res.status(204).json(null);
         }
 
-        res.json(response);
+        res.status(200).json(response);
     }
 
     // POST USERS
@@ -20,14 +20,17 @@ const UsersController = (User) => {
             const user = new User(req.body);
             user.password = await bcrypt.hash(user.password, 2)
             await user.save();
-            res.json(user);
+            res.status(201).json(user);
         }catch(err){
+            console.log(err);
             if(err.name === "ValidationError"){
                 const errorObj = {};
                 const keyError = Object.keys(err.errors)[0];
                 errorObj[keyError] = err.errors[keyError].message;
-                res.status(400).send(errorObj);   
-            }         
+                res.status(406).send(errorObj);   
+            } else{
+                res.status(500).json("Mongo's error");
+            }      
         }
     }
 
@@ -39,7 +42,7 @@ const UsersController = (User) => {
 
             res.json(response);
         }catch(err){
-            res.status(404).json(`${err.name}: Unknown Id`);
+            res.status(500).json(err.name);
         }
     }
 
@@ -61,9 +64,9 @@ const UsersController = (User) => {
                     phone: body.phone
                 }
             })
-            res.json(response);
+            res.status(200).json(response);
         }catch(err){
-            res.status(404).json(`${err.name}: Unknown Id`);
+            res.status(500).json(err.name);
         }
     }
     
@@ -76,7 +79,7 @@ const UsersController = (User) => {
 
             res.status(202).json('User has been deleted...');
         }catch(err){
-            res.status(404).json(`${err.name}: Unknown Id`);
+            res.status(500).json(err.name);
         }
     }
 
