@@ -85,7 +85,7 @@ const UsersController = (User) => {
 
     // LOGIN
     const login = async (req, res) => {
-        const {body} = req;
+        const { body } = req;
         const uploadedUser = await User.findOne({"userName": body.userName})
         let response;
         if(uploadedUser && await bcrypt.compare(body.password, uploadedUser.password)) {
